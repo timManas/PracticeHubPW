@@ -1,4 +1,4 @@
-# PlayWright PracticeLabs Demo
+# PlayWright Practice Labs Demo
 
 Just a demo project for educational purposes.
 
