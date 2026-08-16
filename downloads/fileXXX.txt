@@ -1,0 +1,2 @@
+Hello from QA Practice Hub!
+Use this file to test download scenarios.
