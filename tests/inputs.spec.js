@@ -35,7 +35,7 @@ test('Enter Valid Information', async ({ page }) => {
 
     await expect(page.getByTestId('readonly-input')).toHaveValue('Cannot edit this');
 
-    
+
     await page.getByTestId('input-output').fill('Typing 1234');
     await expect(page.getByTestId('input-output-result')).toHaveText('Typing 1234');
     await page.waitForTimeout(5000);
@@ -59,4 +59,50 @@ test('Enter Invalid Information', async ({ page }) => {
 
 
     await page.waitForTimeout(5000);
+})
+
+
+test('Clear Valid Information', async ({ page }) => {
+    await page.goto('https://qapracticehub.com/#inputs');
+
+    await page.getByTestId('text-input').fill('John Doe');
+    await page.getByTestId('text-input').clear();
+    await expect(page.getByTestId('text-input')).toHaveValue('');
+
+    await page.getByTestId('email-input').fill('JohnDoe@email.com');
+    await page.getByTestId('email-input').clear();
+    await expect(page.getByTestId('email-input')).toHaveValue('');
+
+    await page.getByTestId('password-input').fill('Password123');
+    await page.getByTestId('password-input').clear();
+    await expect(page.getByTestId('password-input')).toHaveValue('');
+
+    await page.getByTestId('number-input').fill('5');
+    await page.getByTestId('number-input').clear();
+    await expect(page.getByTestId('number-input')).toHaveValue('');
+
+    await page.getByTestId('date-input').fill('1987-12-05');
+    await page.getByTestId('date-input').clear();
+    await expect(page.getByTestId('date-input')).toHaveValue('');
+
+    await page.getByTestId('time-input').fill('14:57');
+    await page.getByTestId('time-input').clear();
+    await expect(page.getByTestId('time-input')).toHaveValue('');
+
+    await page.getByTestId('tel-input').fill('4372621214');
+    await page.getByTestId('tel-input').clear();
+    await expect(page.getByTestId('tel-input')).toHaveValue('');
+
+    await page.getByTestId('textarea-input').fill('Hello World');
+    await page.getByTestId('textarea-input').clear();
+    await expect(page.getByTestId('textarea-input')).toHaveValue('');
+
+
+    
+    await page.getByTestId('input-output').fill('Typing 1234');
+    await page.getByTestId('input-output').clear();
+    await expect(page.getByTestId('input-output-result')).toHaveText('—');
+    await page.waitForTimeout(5000);
+    
+    
 })
