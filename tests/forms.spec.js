@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test('Has Form Page', async ({ page }) => {
-  // Test implementation
-  await page.goto('https://qapracticehub.com');
-  await page.getByTestId('nav-forms').click();
-  await expect(page.getByRole('heading', { name: 'Login & Registration Forms' })).toHaveText('Login & Registration Forms');
+    // Test implementation
+    await page.goto('https://qapracticehub.com');
+    await page.getByTestId('nav-forms').click();
+    await expect(page.getByRole('heading', { name: 'Login & Registration Forms' })).toHaveText('Login & Registration Forms');
 })
 
 test('Submit Valid Login', async ({ page }) => {
