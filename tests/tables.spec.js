@@ -27,8 +27,7 @@ test("Has Tables Page", async ({ page }) => {
 //     await expect(rows).toHaveCount(4);
 // })
 
-// Verify filter by name
-test("Verify filter by name-Descending", async({page}) => {
+test("Verify sort by name-Descending", async({page}) => {
     await page.goto('https://qapracticehub.com/#tables');
     await page.getByTestId('table-sort-name').dblclick();
 
@@ -40,7 +39,7 @@ test("Verify filter by name-Descending", async({page}) => {
     }
 })
 
-test("Verify filter by name-Ascending", async({page}) => {
+test("Verify sort by name-Ascending", async({page}) => {
     await page.goto('https://qapracticehub.com/#tables');
 
     await page.getByTestId('table-sort-name').click();
@@ -52,9 +51,53 @@ test("Verify filter by name-Ascending", async({page}) => {
     }
 })
 
-// Verify sort by name
+
 // Verify sort by age
+test("Verify sort by age - Ascending", async({page}) => {
+    await page.goto('https://qapracticehub.com/#tables');
+
+    await page.getByTestId('table-sort-age').click();
+    const rows = await (page.getByTestId('users-table-body').locator('tr'))
+    for (let i=0; i < await rows.count()-1; i++) {
+        const currentAge = await rows.nth(i).locator('td').nth(5).innerText()
+        const nextAge = await rows.nth(i+1).locator('td').nth(5).innerText()
+        expect(Number(currentAge) <= Number(nextAge)).toBe(true)
+    }
+})
+
+// Verify sort by age
+test("Verify sort by age - Descending", async({page}) => {
+    await page.goto('https://qapracticehub.com/#tables');
+
+    await page.getByTestId('table-sort-age').dblclick();
+    const rows = await (page.getByTestId('users-table-body').locator('tr'))
+    for (let i=0; i < await rows.count()-1; i++) {
+        const currentAge = await rows.nth(i).locator('td').nth(5).innerText()
+        const nextAge = await rows.nth(i+1).locator('td').nth(5).innerText()
+        expect(Number(currentAge) > Number(nextAge)).toBe(true)
+    }
+})
+
 // Verify we can select rows and verify the output.
+test("Verify we can select rows and verify the output.", async({page}) => {
+    await page.goto('https://qapracticehub.com/#tables');
+
+    const rows = await (page.getByTestId('users-table-body')).locator('tr')
+    for (let i=0; i < await (rows.count()); i++) {
+        const row =  await rows.nth(i).innerText()
+        const index = await rows.nth(i).locator('td').nth(1).innerText()
+
+        if (index == 2 || index == 4) {
+            console.log(row)
+            await rows.nth(i).locator('td').nth(0).click()
+            const checkbox = await page.getByTestId('row-checkbox-' + index)
+            await checkbox.click()
+        }
+    }
+    
+    await expect(page.getByTestId('table-selection-output')).toHaveText("2 row(s) selected")
+})
+
 // Verify we can delete a single row
 // Verify we can delete multiple rows
 // Verify we can switch the page to the next page
