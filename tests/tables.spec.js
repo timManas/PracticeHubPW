@@ -6,8 +6,52 @@ test("Has Tables Page", async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Tables' })).toHaveText('Tables');
 })
 
-// Verify the table has 4 rows and 5 columns.
+// test("Verify the table has 4 rows and 5 columns", async ({ page }) => {
+//     await page.goto('https://qapracticehub.com/#tables');
+
+//     // Verifies if table has indeed 4  rows
+//     const rows = await (page.getByTestId('users-table-body').locator('tr'))
+//     for (let i=0; i< await rows.count(); i++) {
+//         const row = rows.nth(i);
+//         // console.log(await row.innerText()) // Prints th entire row
+
+//         let columns = row.locator('td')
+//         await expect(columns).toHaveCount(7);
+
+//         for (let j=0; j < await columns.count(); j++) {
+//             const col = columns.nth(j);
+//             console.log(await col.innerText())
+//         }
+
+//     }
+//     await expect(rows).toHaveCount(4);
+// })
+
 // Verify filter by name
+test("Verify filter by name-Descending", async({page}) => {
+    await page.goto('https://qapracticehub.com/#tables');
+    await page.getByTestId('table-sort-name').dblclick();
+
+    const rows = await (page.getByTestId('users-table-body').locator('tr'))
+    for (let i=0; i < await rows.count() - 1; i++) {
+        const currentName = await rows.nth(i).locator('td').nth(2).innerText()
+        const nextName = await rows.nth(i+1).locator('td').nth(2).innerText()
+        expect(currentName.charAt(0) > nextName.charAt(0)).toBe(true)
+    }
+})
+
+test("Verify filter by name-Ascending", async({page}) => {
+    await page.goto('https://qapracticehub.com/#tables');
+
+    await page.getByTestId('table-sort-name').click();
+    const rows = await (page.getByTestId('users-table-body').locator('tr'))
+    for (let i=0; i < await rows.count() -1; i++) {
+        const currentName = await rows.nth(i).locator('td').nth(2).innerText()
+        const nextName = await rows.nth(i+1).locator('td').nth(2).innerText()
+        expect(currentName.charAt(0) < nextName.charAt(0)).toBe(true)
+    }
+})
+
 // Verify sort by name
 // Verify sort by age
 // Verify we can select rows and verify the output.
